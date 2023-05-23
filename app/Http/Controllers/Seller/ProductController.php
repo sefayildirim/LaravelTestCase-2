@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categories;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +16,13 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user(); // Giriş yapan kullanıcı
+        $categories = $user->seller_categories()
+            ->get();
+
         if ($request->ajax()) {
             $user = Auth::user(); // Giriş yapan kullanıcı
-            $products = $user->seller_product()->with('category')->get();
-
+            $products = $user->seller_product()->with('category')->orderBy('id','desc');
             return DataTables::of($products)
                 ->addColumn('edit', function ($product) {
                     $btn = '<button type="button" class="btn btn-primary btn-sm edit" data-id="'.$product->id.'">Düzenle</button>';
@@ -32,7 +36,8 @@ class ProductController extends Controller
                 ->make(true);
         }
 
-        return view('dashboard.seller-panel.product-list');
+
+        return view('dashboard.seller-panel.product-list', compact('categories'));
     }
 
     /**
@@ -48,7 +53,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $categoryName = $request->input('category_name');
+        $category = Categories::where('category_name', $categoryName)->first();
+        $user = Auth::id(); // Giriş yapan kullanıcının id değeri
+
+        if (!$category) {
+            abort(403,'Böyle bir Kategori bulunamadı');
+        }else{
+            Products::create([
+                'product_name' => $request->input('product_name'),
+                'category_id' => $category->id,
+                'seller_id' => $user,
+            ]);
+        }
+
+
+
+        return response()->json(['success'=>'Kategori başarıyla eklendi.']);
     }
 
     /**
@@ -64,7 +85,10 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $products = Products::find($id);
+        $categoryName = $products->category->category_name;
+        $products->category_name = $categoryName;
+        return response()->json($products);
     }
 
     /**
@@ -72,7 +96,26 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = Products::find($id);
+        if (!$product) {
+            abort(404, 'Güncellenecek ürün bulunamadı');
+        }
+
+        $product->product_name = $request->input('product_name');
+        $categoryName = $request->input('category_name');
+        $category = Categories::where('category_name', $categoryName)->first();
+        $user = Auth::id(); // Giriş yapan kullanıcının id değeri
+
+        if (!$category) {
+            abort(403, 'Böyle bir Kategori bulunamadı');
+        } else {
+            $product->category_id = $category->id;
+            $product->seller_id = $user;
+            $product->save();
+        }
+
+        return response()->json(['success' => 'Ürün başarıyla güncellendi.']);
+
     }
 
     /**
@@ -80,6 +123,7 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Products::find($id)->delete();
+        return response()->json(['success'=>'Ürün başarıyla silindi.']);
     }
 }

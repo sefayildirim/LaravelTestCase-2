@@ -35,7 +35,7 @@
   </div>
 
 
-    <!-- Edit User Modal -->
+    <!-- Edit Category Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

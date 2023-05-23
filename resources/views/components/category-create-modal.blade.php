@@ -34,7 +34,7 @@
 <script>
     addEventListener("DOMContentLoaded", function(e) {
         $(document).ready(function() {
-            // Create User
+            // Create Category
             $('#createForm').submit(function(e) {
                 e.preventDefault();
                 var formData = {
