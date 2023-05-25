@@ -1,66 +1,38 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Relationships Test Case
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aşağıda ERD diyagramı verilecek olan sistemi oluşturmanız ve web arayüzüyle birlikte tamamlamanızı beklemekteyiz.
+ERD diyagramına bağlı kalmakla birlikte, kafanızda oluşturacağınız senaryoya göre daha fazlasını üstüne koymanız ve ek 
+tablolar oluşturmanız beklenmektedir.
 
-## About Laravel
+![ERD Diagram](https://i.hizliresim.com/4vpqjzn.jpg)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Back-end:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Model İlişkileri**: Proje için tanımlanan veritabanı tabloları arasındaki ilişkileri model sınıfları üzerinde tanımlayın. Bu, Eloquent ORM ile yapılabilir. İlişkileri belirlemek için `hasOne`, `hasMany`, `belongsTo`, `belongsToMany` gibi ilişki metotlarını kullanmanız gerekmektedir.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Laravel ORM**: Laravel'in ORM özelliklerini kullanarak veritabanı işlemlerini gerçekleştirin. Model sınıflarınız üzerinde, veritabanı ile ilgili CRUD (oluşturma, okuma, güncelleme, silme) işlemlerini yapacak yöntemleri (methodlar) tanımlamalısınız.
 
-## Learning Laravel
+- **Laravel UI / Jetstream**: Laravel UI veya Jetstream gibi paketleri kullanarak kullanıcı oturumu açma işlemini gerçekleştirin. Kullanıcıların e-posta doğrulaması yapmasını sağlayan bir oturum açma yöntemi oluşturun. Mailtrap gibi bir hizmeti kullanarak e-posta doğrulama testini yapabilirsiniz.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Middleware**: Middleware kullanarak, e-posta doğrulaması yapılmamış veya hesapları etkinleştirilmemiş kullanıcıların hiçbir işlem yapamamasını sağlayın. Bu, kullanıcıların sisteme giriş yapmalarını veya diğer işlemleri gerçekleştirmelerini engelleyecektir.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Kullanıcı ve Yönetici Paneli**: Hem kullanıcılar hem de yöneticiler (admin) için ayrı panel sayfaları oluşturun. Yönetici paneli, `user_detail` tablosundaki bilgilere dayanarak kullanıcıları yönetebilmelidir.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Veritabanı Seeding**: Veritabanına, ön yüzde görüntülenebilecek kadar örnek veri eklemek için Database Seeder kullanın. Bu, projenizin test edilmesi ve veri görüntüleme işlemlerinin gerçekleştirilmesi için faydalı olacaktır.
 
-## Laravel Sponsors
+## Front-end:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Admin Paneli:
 
-### Premium Partners
+- Tüm satıcıları, müşterileri, ürünleri, raporları, ödemeleri ve siparişleri görüntüleyebilecek ekranlar oluşturun.
+- Bootstrap DataTables kullanın, ancak Laravel'de kendi sayfalama görünümünüzü oluşturmak için custom pagination view'ınızı yayınlayın. DataTables'da "showing" kısmını devre dışı bırakın ve 25-50 arasında bir değeri seçmek için kullanılabilen bir buton ekleyin.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Kullanıcı Paneli (Müşteri - Satıcı):
 
-## Contributing
+- Kullanıcılar, kendileriyle ilişkili siparişleri, raporları ve ödemeleri görüntüleyebilmelidir.
+- Oturum açmış kullanıcıların diğer endpoint'lere erişimini engellemek için Middleware'i doğru bir şekilde yapılandırın.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Bonus:
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- API rotası dosyasına bir "resource" yapısı oluşturun ve Postman gibi bir araçla bu rotalardaki yöntemleri test edin.
+- CRUD işlemleri tamamlanmalıdır. Kodunuzu anlaşılır hale getirmek için yorum satırları eklemeyi unutmayın.
